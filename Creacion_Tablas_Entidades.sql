@@ -1,0 +1,128 @@
+CREATE SCHEMA Dragones_Y_Mazmorras;
+
+USE Dragones_Y_Mazmorras;
+
+CREATE TABLE Personaje(
+Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
+Nivel_personaje INTEGER NOT NULL,
+Oro_total INTEGER NOT NULL,
+Apariencia VARCHAR(50) NOT NULL,
+Tipo_rol ENUM('MAGO', 'GUERRERO', 'TANQUE'),
+Dragones_desbloq INTEGER NOT NULL
+);
+
+CREATE TABLE Ciudad(
+Nombre_ciudad VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE Tienda(
+Nombre_tienda VARCHAR(50) UNIQUE NOT NULL,
+Nombre_ciudad VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE Forja(
+Nombre_forja VARCHAR(50) UNIQUE NOT NULL,
+Nombre_ciudad VARCHAR(50) UNIQUE NOT NULL,
+Arma_dispon ENUM('ESPADA', 'HACHA', 'BACULO')
+);
+
+CREATE TABLE Daga(
+ID INTEGER NOT NULL,
+Nombre_personaje VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE Compra(
+ID INTEGER NOT NULL,
+Nombre_tienda VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE Visita(
+Nombre_ciudad VARCHAR(50) UNIQUE NOT NULL,
+Nombre_personaje VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE Arma(
+Tipo_arma ENUM('ESPADA', 'HACHA', 'BACULO'),
+Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
+Peso INTEGER NOT NULL
+);
+
+CREATE TABLE Posee(
+Tipo_arma ENUM('ESPADA', 'HACHA', 'BACULO'),
+Nombre_personaje VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE Fabrica(
+Tipo_arma ENUM('ESPADA', 'HACHA', 'BACULO'),
+Nombre_forja VARCHAR(50) UNIQUE NOT NULL,
+Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
+Fecha_fabricacion DATETIME,
+Nombre VARCHAR(50) UNIQUE NOT NULL,
+Daño INTEGER NOT NULL
+);
+
+CREATE TABLE Enemigo(
+Cod_enemigo INTEGER NOT NULL,
+Cod_misionindi INTEGER NOT NULL,
+Nombre_enemigo VARCHAR(50) NOT NULL,
+Oro INTEGER NOT NULL,
+Vida_enemigo INTEGER NOT NULL
+);
+
+CREATE TABLE Mision_indi(
+Cod_misionindi INTEGER NOT NULL,
+Nombre_personaje VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE Habilidad(
+Nombre_habilidad VARCHAR(50) NOT NULL,
+Nivel_desbloq INTEGER NOT NULL,
+Descripcion VARCHAR(50) NOT NULL,
+Nombre_personaje VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE Escuadron(
+Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
+Nivel_escuadron INTEGER UNIQUE NOT NULL
+);
+
+CREATE TABLE Participa_escuadron(
+Nivel_escuadron INTEGER UNIQUE NOT NULL,
+Cod_misionesc INTEGER UNIQUE NOT NULL
+);
+
+CREATE TABLE Mision_escuadron(
+Cod_misionesc INTEGER UNIQUE NOT NULL
+);
+
+CREATE TABLE Dragon(
+Nombre_dragon VARCHAR(50) NOT NULL,
+Vida_dragon INTEGER NOT NULL,
+Nombre_dragonref VARCHAR(50) NOT NULL,
+Cod_misionesc INTEGER UNIQUE NOT NULL
+);
+
+CREATE TABLE NPC_regala(
+Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
+Codigo_pocion INTEGER NOT NULL,
+ID_NPC INTEGER UNIQUE NOT NULL,
+Fecha_regalo DATETIME
+);
+
+CREATE TABLE Rol(
+Tipo_rol ENUM('MAGO', 'GUERRERO', 'TANQUE'),
+Fuerza INTEGER NOT NULL,
+Vida_personaje INTEGER NOT NULL,
+Mana INTEGER NOT NULL
+);
+
+CREATE TABLE Pocion(
+Codigo_pocion INTEGER NOT NULL,
+Vida_restaurada INTEGER NOT NULL,
+Mana_restaurada INTEGER NOT NULL
+);
+
+CREATE TABLE Druida(
+ID_NPC INTEGER UNIQUE NOT NULL
+);
+
