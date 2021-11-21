@@ -1,5 +1,3 @@
-ALTER TABLE Personaje
-ADD CONSTRAINT PRIMARY KEY (Nombre_personaje);
 
 ALTER TABLE Ciudad
 ADD CONSTRAINT PRIMARY KEY (Nombre_ciudad);
@@ -9,9 +7,6 @@ ADD CONSTRAINT PRIMARY KEY (Nombre_tienda, Nombre_ciudad);
 
 ALTER TABLE Forja
 ADD CONSTRAINT PRIMARY KEY (Nombre_forja, Nombre_ciudad);
-
-ALTER TABLE Daga
-ADD CONSTRAINT PRIMARY KEY (ID);
 
 ALTER TABLE Compra
 ADD CONSTRAINT PRIMARY KEY (ID, Nombre_tienda);
@@ -34,8 +29,6 @@ ADD CONSTRAINT PRIMARY KEY (Cod_enemigo, Cod_misionindi);
 ALTER TABLE Mision_indi
 ADD CONSTRAINT PRIMARY KEY (Cod_misionindi);
 
-ALTER TABLE Habilidad
-ADD CONSTRAINT PRIMARY KEY (Nombre_habilidad);
 
 ALTER TABLE Escuadron
 ADD CONSTRAINT PRIMARY KEY (Nombre_personaje, Nivel_escuadron);
@@ -51,9 +44,6 @@ ADD CONSTRAINT PRIMARY KEY (Nombre_dragon, Cod_misionesc);
 
 ALTER TABLE NPC_regala
 ADD CONSTRAINT PRIMARY KEY (Nombre_personaje, Codigo_pocion, ID_NPC, Fecha_regalo);
-
-ALTER TABLE Rol
-ADD CONSTRAINT PRIMARY KEY (Tipo_rol);
 
 ALTER TABLE Pocion
 ADD CONSTRAINT PRIMARY KEY (Codigo_pocion);

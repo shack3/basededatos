@@ -2,13 +2,23 @@ CREATE SCHEMA Dragones_Y_Mazmorras;
 
 USE Dragones_Y_Mazmorras;
 
+CREATE TABLE Rol(
+Tipo_rol ENUM('MAGO', 'GUERRERO', 'TANQUE'),
+Fuerza INTEGER NOT NULL,
+Vida_personaje INTEGER NOT NULL,
+Mana INTEGER NOT NULL,
+CONSTRAINT PRIMARY KEY (Tipo_rol)
+);
+
 CREATE TABLE Personaje(
 Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
 Nivel_personaje INTEGER NOT NULL,
 Oro_total INTEGER NOT NULL,
 Apariencia VARCHAR(50) NOT NULL,
 Tipo_rol ENUM('MAGO', 'GUERRERO', 'TANQUE'),
-Dragones_desbloq INTEGER NOT NULL
+Dragones_desbloq INTEGER NOT NULL,
+PRIMARY KEY (Nombre_personaje),
+CONSTRAINT FK_Tipo_rol_personaje FOREIGN KEY (Tipo_rol) REFERENCES Rol(Tipo_rol)
 );
 
 CREATE TABLE Ciudad(
@@ -27,8 +37,17 @@ Arma_dispon ENUM('ESPADA', 'HACHA', 'BACULO')
 );
 
 CREATE TABLE Daga(
-ID INTEGER NOT NULL,
-Nombre_personaje VARCHAR(50) UNIQUE NOT NULL
+ID INTEGER UNIQUE NOT NULL,
+Nombre_daga VARCHAR(50) UNIQUE NOT NULL,
+CONSTRAINT PRIMARY KEY (ID)
+);
+
+CREATE TABLE Porta(
+	ID_Daga INTEGER UNIQUE NOT NULL,
+    Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
+	PRIMARY KEY (ID_Daga, Nombre_personaje),
+    CONSTRAINT FOREIGN KEY (ID_Daga) REFERENCES Daga(ID),
+    CONSTRAINT FOREIGN KEY (Nombre_personaje) REFERENCES Personaje(Nombre_personaje)
 );
 
 CREATE TABLE Compra(
@@ -78,7 +97,9 @@ CREATE TABLE Habilidad(
 Nombre_habilidad VARCHAR(50) NOT NULL,
 Nivel_desbloq INTEGER NOT NULL,
 Descripcion VARCHAR(50) NOT NULL,
-Nombre_personaje VARCHAR(50) UNIQUE NOT NULL
+Tipo_rol ENUM('MAGO', 'GUERRERO', 'TANQUE'),
+PRIMARY KEY (Nombre_habilidad),
+CONSTRAINT FOREIGN KEY (Tipo_rol) REFERENCES Personaje(Tipo_rol)
 );
 
 CREATE TABLE Escuadron(
@@ -109,12 +130,6 @@ ID_NPC INTEGER UNIQUE NOT NULL,
 Fecha_regalo DATETIME
 );
 
-CREATE TABLE Rol(
-Tipo_rol ENUM('MAGO', 'GUERRERO', 'TANQUE'),
-Fuerza INTEGER NOT NULL,
-Vida_personaje INTEGER NOT NULL,
-Mana INTEGER NOT NULL
-);
 
 CREATE TABLE Pocion(
 Codigo_pocion INTEGER NOT NULL,
