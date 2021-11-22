@@ -28,7 +28,7 @@ CREATE TABLE Ciudad(
 
 CREATE TABLE Tienda(
 	Nombre_tienda VARCHAR(50) UNIQUE NOT NULL,
-	Nombre_ciudad VARCHAR(50) UNIQUE NOT NULL,
+	Nombre_ciudad VARCHAR(50) NOT NULL,
 	PRIMARY KEY (Nombre_tienda, Nombre_ciudad),
 	CONSTRAINT FOREIGN KEY (Nombre_ciudad) REFERENCES Ciudad(Nombre_ciudad)
 );
@@ -48,7 +48,7 @@ CONSTRAINT PRIMARY KEY (ID)
 );
 
 CREATE TABLE Porta(
-	ID_Daga INTEGER UNIQUE NOT NULL,
+	ID_Daga INTEGER NOT NULL,
     Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
 	PRIMARY KEY (ID_Daga, Nombre_personaje),
     CONSTRAINT FOREIGN KEY (ID_Daga) REFERENCES Daga(ID),
@@ -57,14 +57,17 @@ CREATE TABLE Porta(
 
 CREATE TABLE Compra(
 	ID INTEGER NOT NULL,
-	Nombre_tienda VARCHAR(50) UNIQUE NOT NULL,
-	PRIMARY KEY (ID, Nombre_tienda),
+	Nombre_tienda VARCHAR(50) NOT NULL,
+    Nombre_personaje VARCHAR(50) NOT NULL,
+    Codigo_transaccion INTEGER UNIQUE NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (Codigo_transaccion),
 	CONSTRAINT FOREIGN KEY (ID) REFERENCES Daga(ID),
-	CONSTRAINT FOREIGN KEY (Nombre_tienda) REFERENCES Tienda(Nombre_tienda)
+	CONSTRAINT FOREIGN KEY (Nombre_tienda) REFERENCES Tienda(Nombre_tienda), 
+    CONSTRAINT FOREIGN KEY (Nombre_personaje) REFERENCES Personaje(Nombre_personaje)
 );
 
 CREATE TABLE Visita(
-	Nombre_ciudad VARCHAR(50) UNIQUE NOT NULL,
+	Nombre_ciudad VARCHAR(50) NOT NULL,
 	Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
 	PRIMARY KEY (Nombre_ciudad, Nombre_personaje),
 	CONSTRAINT FOREIGN KEY (Nombre_ciudad) REFERENCES Ciudad(Nombre_ciudad),
@@ -75,6 +78,7 @@ CREATE TABLE Arma(
 	Tipo_arma ENUM('ESPADA', 'HACHA', 'BACULO'),
 	Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
 	Peso INTEGER NOT NULL,
+    Nombre VARCHAR(30) NOT NULL,
 	PRIMARY KEY (Tipo_arma, Nombre_personaje),
     CONSTRAINT FOREIGN KEY (Nombre_personaje) REFERENCES Personaje(Nombre_personaje)
 );
@@ -89,8 +93,8 @@ CREATE TABLE Posee(
 
 CREATE TABLE Fabrica(
 	Tipo_arma ENUM('ESPADA', 'HACHA', 'BACULO'),
-	Nombre_forja VARCHAR(50) UNIQUE NOT NULL,
-	Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
+	Nombre_forja VARCHAR(50) NOT NULL,
+	Nombre_personaje VARCHAR(50) NOT NULL,
 	Fecha_fabricacion DATETIME,
 	Nombre VARCHAR(50) UNIQUE NOT NULL,
 	Daño INTEGER NOT NULL,
@@ -101,8 +105,8 @@ CREATE TABLE Fabrica(
 );
 
 CREATE TABLE Mision_indi(
-	Cod_misionindi INTEGER NOT NULL,
-	Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
+	Cod_misionindi INTEGER UNIQUE NOT NULL AUTO_INCREMENT,
+	Nombre_personaje VARCHAR(50) NOT NULL,
 	PRIMARY KEY (Cod_misionindi),
 	CONSTRAINT FOREIGN KEY (Nombre_personaje) REFERENCES Personaje(Nombre_personaje)
 );
@@ -110,13 +114,15 @@ CREATE TABLE Mision_indi(
 
 
 CREATE TABLE Enemigo(
-	Cod_enemigo INTEGER NOT NULL,
+	Cod_enemigo INTEGER NOT NULL AUTO_INCREMENT,
 	Cod_misionindi INTEGER NOT NULL,
 	Nombre_enemigo VARCHAR(50) NOT NULL,
 	Oro INTEGER NOT NULL,
 	Vida_enemigo INTEGER NOT NULL,
+    Tipo_rol ENUM('MAGO', 'GUERRERO', 'TANQUE'),
 	PRIMARY KEY (Cod_enemigo, Cod_misionindi),
-	CONSTRAINT FOREIGN KEY (Cod_misionindi) REFERENCES Mision_indi(Cod_misionindi)
+	CONSTRAINT FOREIGN KEY (Cod_misionindi) REFERENCES Mision_indi(Cod_misionindi),
+    CONSTRAINT FOREIGN KEY (Tipo_rol) REFERENCES Rol(Tipo_rol)
 );
 
 
@@ -130,11 +136,16 @@ CREATE TABLE Habilidad(
 	CONSTRAINT FOREIGN KEY (Tipo_rol) REFERENCES Personaje(Tipo_rol)
 );
 
-CREATE TABLE Escuadron( # Depende de personaje pero todavia no se como hacerlo.
-	Nombre_personaje VARCHAR(50) UNIQUE NOT NULL, ## ARRAY DE LOS 3 TIPOS DE PERSONAJES, NO UNO SOLO.
-	Nivel_escuadron INTEGER UNIQUE NOT NULL,
-	Cod_escuadron INTEGER UNIQUE NOT NULL,
-	PRIMARY KEY (Cod_escuadron)
+CREATE TABLE Escuadron( #Meter trigger para que el personaje en si no sea distinto a la casilla que le corresponde.
+	Nombre_personaje_tanque VARCHAR(50) UNIQUE NOT NULL, 
+    Nombre_personaje_mago VARCHAR(50) UNIQUE NOT NULL,
+    Nombre_personaje_guerrero VARCHAR(50) UNIQUE NOT NULL,
+	Nivel_escuadron INTEGER NOT NULL, #<----- DEBE DE CREARSE CON LA MEDIA DE LOS 3 PERSONAJES. Otro trigger.
+	Cod_escuadron INTEGER UNIQUE NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (Cod_escuadron),
+    CONSTRAINT FOREIGN KEY (Nombre_personaje_tanque) REFERENCES Personaje(Nombre_personaje),
+    CONSTRAINT FOREIGN KEY (Nombre_personaje_mago) REFERENCES Personaje(Nombre_personaje),
+    CONSTRAINT FOREIGN KEY (Nombre_personaje_guerrero) REFERENCES Personaje(Nombre_personaje)
 );
 
 CREATE TABLE Dragon(
@@ -145,18 +156,18 @@ CREATE TABLE Dragon(
 );
 
 CREATE TABLE Mision_escuadron(
-	Cod_misionesc INTEGER UNIQUE NOT NULL AUTO_INCREMENT, 
+	Cod_mision INTEGER UNIQUE NOT NULL AUTO_INCREMENT,
     Nombre_dragon VARCHAR(50) NOT NULL,
-    PRIMARY KEY (Cod_misionesc, Nombre_dragon),
-    CONSTRAINT FK_Nombre_Mision_Dragon FOREIGN KEY (Nombre_dragon) REFERENCES Dragon(Nombre_dragon)
+    PRIMARY KEY (Cod_mision, Nombre_dragon),
+    CONSTRAINT FOREIGN KEY (Nombre_dragon) REFERENCES Dragon(Nombre_dragon)
 );
 
-CREATE TABLE Participa_escuadron(
-	Cod_misionesc INTEGER UNIQUE NOT NULL,
+CREATE TABLE Participa_escuadron( #Junta escuadrones con misiones.
+	Cod_mision INTEGER UNIQUE NOT NULL,
     Cod_escuadron INTEGER UNIQUE NOT NULL,
-    PRIMARY KEY (Cod_misionesc, Cod_escuadron),
-    CONSTRAINT FK_Codigo_Mision_Escuadron FOREIGN KEY (Cod_misionesc) REFERENCES Mision_escuadron(Cod_misionesc),
-    CONSTRAINT FK_Codigo_Escuadron FOREIGN KEY (Cod_escuadron) REFERENCES Escuadron(Cod_escuadron)
+    PRIMARY KEY (Cod_mision, Cod_escuadron),
+    CONSTRAINT FOREIGN KEY (Cod_mision) REFERENCES Mision_escuadron(Cod_mision),
+    CONSTRAINT FOREIGN KEY (Cod_escuadron) REFERENCES Escuadron(Cod_escuadron)
 );
 
 CREATE TABLE Desbloquea( # Esta tabla se puede llegar a borrar dado a que los niveles minimos asociados al dragon ya pueden hacer esta relacion.
@@ -175,16 +186,17 @@ CREATE TABLE Pocion(
 );
 
 CREATE TABLE Druida(
-	ID_NPC INTEGER UNIQUE NOT NULL,
+	ID_NPC INTEGER UNIQUE NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (ID_NPC)
 );
 
 CREATE TABLE NPC_regala(
-	Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
+	Nombre_personaje VARCHAR(50) NOT NULL,
 	Codigo_pocion INTEGER NOT NULL,
-	ID_NPC INTEGER UNIQUE NOT NULL,
+	ID_NPC INTEGER NOT NULL,
 	Fecha_regalo DATETIME,
-	PRIMARY KEY (Nombre_personaje, Codigo_pocion, ID_NPC, Fecha_regalo),
+    Codigo_Transferencia INTEGER UNIQUE NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (Codigo_Transferencia),
 	CONSTRAINT FOREIGN KEY (Nombre_personaje) REFERENCES Personaje(Nombre_personaje),
 	CONSTRAINT FOREIGN KEY (Codigo_pocion) REFERENCES Pocion(Codigo_pocion),
 	CONSTRAINT FOREIGN KEY (ID_NPC) REFERENCES Druida(ID_NPC)
