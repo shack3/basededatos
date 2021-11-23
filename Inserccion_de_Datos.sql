@@ -25,10 +25,26 @@ VALUES ("Dehiss", 1000, 0),("Rannyexba", 1500, 1),("Pastan", 2500, 2),("Grifin",
 INSERT INTO Desbloquea
 VALUES ("Dehiss", "Rannyexba"), ("Rannyexba", "Pastan"), ("Pastan", "Grifin"), ("Grifin", "Kystorm"), ("Kystorm", "Ocho cabezas");
 
-INSERT INTO Personaje
-VALUES ("Raendan", 0, 0, "Guapo", "MAGO", 0), ("Manddin", 0, 0, "Bello", "MAGO", 0), ("Xadel", 0, 0, "Feo", "MAGO", 0), ("Enso", 0, 0, "Mediocre", "MAGO", 0),
-	   ("Stanto", 0, 0, "Alto", "GUERRERO", 0), ("Makwi", 0, 0, "Gordo", "GUERRERO", 0), ("Carorhall", 0, 0, "Reluciente", "GUERRERO", 0), ("Dryto", 0, 0, "Poderoso", "GUERRERO", 0),
-      ("Ahkarg", 0, 0, "Especialista", "TANQUE", 0), ("Bucksel", 0, 0, "Armario", "TANQUE", 0), ("Mashgor", 0, 0, "Bajo", "TANQUE", 0), ("Gim", 0, 0, "Elfo", "TANQUE", 0);
+INSERT INTO Jugador VALUES
+("Breakfury"),
+("Hammerpowerthunder"),
+("Battlerboar"),
+("Cloakbane"),
+("Greyblade");
+
+INSERT INTO Personaje VALUES 
+("Raendan", 0, 0, "Guapo", "MAGO", 0, "Breakfury"), 
+("Manddin", 0, 0, "Bello", "MAGO", 0, "Hammerpowerthunder"), 
+("Xadel", 0, 0, "Feo", "MAGO", 0, "Greyblade"), 
+("Enso", 0, 0, "Mediocre", "MAGO", 0, "Battlerboar"),
+("Stanto", 0, 0, "Alto", "GUERRERO", 0, "Cloakbane"),
+("Makwi", 0, 0, "Gordo", "GUERRERO", 0, "Greyblade"), 
+("Carorhall", 0, 0, "Reluciente", "GUERRERO", 0, "Breakfury"), 
+("Dryto", 0, 0, "Poderoso", "GUERRERO", 0, "Hammerpowerthunder"),
+("Ahkarg", 0, 0, "Especialista", "TANQUE", 0, "Battlerboar"),
+("Bucksel", 0, 0, "Armario", "TANQUE", 0, "Cloakbane"),
+("Mashgor", 0, 0, "Bajo", "TANQUE", 0, "Greyblade"), 
+("Gim", 0, 0, "Elfo", "TANQUE", 0, "Breakfury");
 
 INSERT INTO Mision_indi (Nombre_personaje)
 VALUES ("Raendan"), ("Ahkarg"), ("Bucksel"), ("Carorhall");
