@@ -10,6 +10,12 @@ Mana INTEGER NOT NULL,
 CONSTRAINT PRIMARY KEY (Tipo_rol)
 );
 
+CREATE TABLE Jugador(
+Nombre_jugador VARCHAR(50) UNIQUE NOT NULL,
+Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
+PRIMARY KEY (Nombre_jugador)
+);
+
 CREATE TABLE Personaje(
 Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
 Nivel_personaje INTEGER NOT NULL,
@@ -18,7 +24,8 @@ Apariencia VARCHAR(50) NOT NULL,
 Tipo_rol ENUM('MAGO', 'GUERRERO', 'TANQUE'),
 Dragones_desbloq INTEGER NOT NULL,
 PRIMARY KEY (Nombre_personaje),
-CONSTRAINT FK_Tipo_rol_personaje FOREIGN KEY (Tipo_rol) REFERENCES Rol(Tipo_rol)
+CONSTRAINT FK_Tipo_rol_personaje FOREIGN KEY (Tipo_rol) REFERENCES Rol(Tipo_rol),
+CONSTRAINT FK_Nombre_jugador_personaje FOREIGN KEY (Nombre_jugador) REFERENCES Jugador(Nombre_jugador)
 );
 
 CREATE TABLE Ciudad(
