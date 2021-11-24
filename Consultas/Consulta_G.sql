@@ -1,11 +1,12 @@
 #Obtener nombres, vida y fuerza de guerreros que hayan recibido una poción de
-#todos los druidas existentes.
+#todos los druidas existentes. => Guerreros tales que no hay druida que no les haya dado pocion
 
-SELECT rol.Tipo_rol, rol.Vida_personaje, rol.Fuerza 
-FROM rol, personaje, npc_regala
-WHERE rol.Tipo_rol = personaje.Tipo_rol
-AND personaje.Nombre_personaje = npc_regala.Nombre_personaje
+SELECT personaje.Nombre_personaje, rol.Vida_personaje, rol.Fuerza, personaje.Nombre_jugador
+FROM personaje, rol
+WHERE personaje.Tipo_rol = rol.Tipo_rol
 AND rol.Tipo_rol = "GUERRERO"
-GROUP BY personaje.Nombre_personaje
-HAVING COUNT(*) > (SELECT COUNT(DISTINCT ID_NPC)
-					FROM druida);
+AND NOT EXISTS (SELECT * FROM npc_regala
+				WHERE NOT EXISTS(SELECT * FROM druida
+									 WHERE personaje.Nombre_personaje = npc_regala.Nombre_personaje
+									 AND npc_regala.ID_NPC = druida.ID_NPC));
+                                     
