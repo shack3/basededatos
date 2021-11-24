@@ -12,20 +12,28 @@ CONSTRAINT PRIMARY KEY (Tipo_rol)
 
 CREATE TABLE Jugador(
 Nombre_jugador VARCHAR(50) UNIQUE NOT NULL,
-Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
 PRIMARY KEY (Nombre_jugador)
 );
 
+CREATE TABLE Daga(
+ID_daga INTEGER UNIQUE NOT NULL AUTO_INCREMENT,
+Nombre_daga VARCHAR(50) UNIQUE NOT NULL,
+CONSTRAINT PRIMARY KEY (ID_daga)
+);
+
 CREATE TABLE Personaje(
+Nombre_jugador VARCHAR(50) UNIQUE NOT NULL,
 Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
 Nivel_personaje INTEGER NOT NULL,
 Oro_total INTEGER NOT NULL,
 Apariencia VARCHAR(50) NOT NULL,
 Tipo_rol ENUM('MAGO', 'GUERRERO', 'TANQUE'),
 Dragones_desbloq INTEGER NOT NULL,
+ID_daga INTEGER NOT NULL,
 PRIMARY KEY (Nombre_personaje),
 CONSTRAINT FK_Tipo_rol_personaje FOREIGN KEY (Tipo_rol) REFERENCES Rol(Tipo_rol),
 CONSTRAINT FK_Nombre_jugador_personaje FOREIGN KEY (Nombre_jugador) REFERENCES Jugador(Nombre_jugador)
+CONSTRAINT FK_ID_daga_personaje FOREIGN KEY (ID_daga) REFERENCES Daga(ID_daga),
 );
 
 CREATE TABLE Ciudad(
@@ -41,36 +49,23 @@ CREATE TABLE Tienda(
 );
 
 CREATE TABLE Forja(
+	Id_forja INTEGER NOT NULL AUTO_INCREMENT,
 	Nombre_forja VARCHAR(50) UNIQUE NOT NULL,
 	Nombre_ciudad VARCHAR(50) UNIQUE NOT NULL,
 	Arma_dispon ENUM('ESPADA', 'HACHA', 'BACULO'),
-	PRIMARY KEY (Nombre_forja, Nombre_ciudad),
+	PRIMARY KEY (Id_forja, Nombre_ciudad),
 	CONSTRAINT FOREIGN KEY (Nombre_ciudad) REFERENCES Ciudad(Nombre_ciudad)
 );
 
-CREATE TABLE Daga(
-ID INTEGER UNIQUE NOT NULL,
-Nombre_daga VARCHAR(50) UNIQUE NOT NULL,
-CONSTRAINT PRIMARY KEY (ID)
-);
-
-CREATE TABLE Porta(
-	ID_Daga INTEGER NOT NULL,
-    Nombre_personaje VARCHAR(50) UNIQUE NOT NULL,
-	PRIMARY KEY (ID_Daga, Nombre_personaje),
-    CONSTRAINT FOREIGN KEY (ID_Daga) REFERENCES Daga(ID),
-    CONSTRAINT FOREIGN KEY (Nombre_personaje) REFERENCES Personaje(Nombre_personaje)
-);
-
 CREATE TABLE Compra(
-	ID INTEGER NOT NULL,
+	ID_daga INTEGER NOT NULL,
 	Nombre_tienda VARCHAR(50) NOT NULL,
-    Nombre_personaje VARCHAR(50) NOT NULL,
-    Codigo_transaccion INTEGER UNIQUE NOT NULL AUTO_INCREMENT,
+	Nombre_personaje VARCHAR(50) NOT NULL,
+	Codigo_transaccion INTEGER UNIQUE NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (Codigo_transaccion),
-	CONSTRAINT FOREIGN KEY (ID) REFERENCES Daga(ID),
+	CONSTRAINT FOREIGN KEY (ID_daga) REFERENCES Daga(ID_daga),
 	CONSTRAINT FOREIGN KEY (Nombre_tienda) REFERENCES Tienda(Nombre_tienda), 
-    CONSTRAINT FOREIGN KEY (Nombre_personaje) REFERENCES Personaje(Nombre_personaje)
+	CONSTRAINT FOREIGN KEY (Nombre_personaje) REFERENCES Personaje(Nombre_personaje)
 );
 
 CREATE TABLE Visita(
@@ -100,14 +95,14 @@ CREATE TABLE Posee(
 
 CREATE TABLE Fabrica(
 	Tipo_arma ENUM('ESPADA', 'HACHA', 'BACULO'),
-	Nombre_forja VARCHAR(50) NOT NULL,
+	Id_forja VARCHAR(50) NOT NULL,
 	Nombre_personaje VARCHAR(50) NOT NULL,
 	Fecha_fabricacion DATETIME,
 	Nombre VARCHAR(50) UNIQUE NOT NULL,
 	Daño INTEGER NOT NULL,
 	PRIMARY KEY (Tipo_arma, Nombre_forja, Nombre_personaje, Fecha_fabricacion),
 	CONSTRAINT FOREIGN KEY (Tipo_arma) REFERENCES Arma(Tipo_arma),
-	CONSTRAINT FOREIGN KEY (Nombre_forja) REFERENCES Forja(Nombre_forja),
+	CONSTRAINT FOREIGN KEY (Id_forja) REFERENCES Forja(Id_forja),
 	CONSTRAINT FOREIGN KEY (Nombre_personaje) REFERENCES Personaje(Nombre_personaje)
 );
 
@@ -118,7 +113,10 @@ CREATE TABLE Mision_indi(
 	CONSTRAINT FOREIGN KEY (Nombre_personaje) REFERENCES Personaje(Nombre_personaje)
 );
 
-
+CREATE TABLE Tipo_enemigo(
+Nombre_tipoene ENUM ('ESPECTRO', 'GOBLIN', 'TROLL'),
+PRIMARY KEY (Nombre_tipoene)
+);
 
 CREATE TABLE Enemigo(
 	Cod_enemigo INTEGER NOT NULL AUTO_INCREMENT,
@@ -126,10 +124,10 @@ CREATE TABLE Enemigo(
 	Nombre_enemigo VARCHAR(50) NOT NULL,
 	Oro INTEGER NOT NULL,
 	Vida_enemigo INTEGER NOT NULL,
-    Tipo_rol ENUM('MAGO', 'GUERRERO', 'TANQUE'),
+	Nombre_tipoene ENUM('ESPECTRO', 'GOBLIN', 'TROLL'),
 	PRIMARY KEY (Cod_enemigo, Cod_misionindi),
 	CONSTRAINT FOREIGN KEY (Cod_misionindi) REFERENCES Mision_indi(Cod_misionindi),
-    CONSTRAINT FOREIGN KEY (Tipo_rol) REFERENCES Rol(Tipo_rol)
+    CONSTRAINT FOREIGN KEY (Nombre_tipoene) REFERENCES Tipo_enemigo(Nombre_tipoene)
 );
 
 
