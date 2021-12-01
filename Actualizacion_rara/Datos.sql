@@ -3,12 +3,12 @@ INSERT INTO Ciudad  (Nombre_ciudad)
 VALUES ("Glider"), ("Forgesand"), ("Hiltore"), ("Gazegreenelven"),("Greenbat"), ("Huntdwarf");
 
 INSERT INTO Tienda
-VALUES ("El ojo del lobo", "Glider"), ("El huracan despiadado", "Forgesand"), ("Bazar", "Hiltore"), ("Tienda de ogros", "Gazegreenelven"), ("La esquina endiablada", "Greenbat"), ("Articulos prohibidos", "Huntdwarf")
+VALUES ("Tienda de el ojo del lobo", "Glider"), ("Tienda de el huracan despiadado", "Forgesand"), ("Tienda Bazar", "Hiltore"), ("Tienda de ogros", "Gazegreenelven"), ("Tienda de la esquina endiablada", "Greenbat"), ("Tienda de los articulos prohibidos", "Huntdwarf")
 ,("Tienda de Rolla", "Huntdwarf"), ("Tienda de Swithron", "Glider"), ("Tienda de Aldlas", "Forgesand");
 
 INSERT INTO Forja(Nombre_forja, Nombre_ciudad, Arma_dispon) VALUES 
 ("Forja de Harmek", "Glider", "ESPADA"), 
-("Forja del enano risueño", "Glider", "HACHA"), 
+("Forja del enano risueño", "Glider", "ESPADA"), 
 ("Forja de Tebez", "Glider", "BACULO"),
 ("Forja del enano risueño", "Forgesand", "HACHA"), 
 ("Forja de Tebez", "Hiltore", "BACULO");
@@ -49,22 +49,21 @@ INSERT INTO Daga(Nombre_daga) VALUES
 ("Daga de marfil"), 
 ("Daga de diamante");
 
-##########################	EDITO	##########################
-INSERT INTO Personaje VALUES 
-("Raendan", 0, 0, "Guapo", "MAGO", 0, "Breakfury", 1), 
-("Manddin", 0, 0, "Bello", "MAGO", 0, "Hammerpowerthunder", 2), 
-("Xadel", 0, 0, "Feo", "MAGO", 0, "Greyblade", 2), 
-("Enso", 0, 0, "Mediocre", "MAGO", 0, "Battlerboar", 3),
-("Stanto", 0, 0, "Alto", "GUERRERO", 0, "Cloakbane", 4),
-("Makwi", 0, 0, "Gordo", "GUERRERO", 0, "Greyblade", 1), 
-("Carorhall", 0, 0, "Reluciente", "GUERRERO", 0, "Breakfury", 4), 
-("Dryto", 0, 0, "Poderoso", "GUERRERO", 0, "Hammerpowerthunder", 3),
-("Ahkarg", 0, 0, "Especialista", "TANQUE", 0, "Battlerboar", 1),
-("Bucksel", 0, 0, "Armario", "TANQUE", 0, "Cloakbane", 2),
-("Mashgor", 0, 0, "Bajo", "TANQUE", 0, "Greyblade", 3), 
-("Gim", 0, 0, "Elfo", "TANQUE", 0, "Breakfury", 4);
 
-###########################	edito	#
+INSERT INTO Personaje VALUES 
+("Raendan", 0, 20, "Guapo", "MAGO", 2, "Breakfury", 1,200), 
+("Manddin", 0, 500, "Bello", "MAGO", 3, "Hammerpowerthunder", 2,200), 
+("Xadel", 0, 628, "Feo", "MAGO", 4, "Greyblade", 2,200), 
+("Enso", 0, 430, "Mediocre", "MAGO", 1, "Battlerboar", 3,200),
+("Stanto", 0, 2000, "Alto", "GUERRERO", 3, "Cloakbane", 4,400),
+("Makwi", 0, 110, "Gordo", "GUERRERO", 0, "Greyblade", 1,400), 
+("Carorhall", 0, 900, "Reluciente", "GUERRERO", 4, "Breakfury", 4,400), 
+("Dryto", 0, 1345, "Poderoso", "GUERRERO", 1, "Hammerpowerthunder", 3,400),
+("Ahkarg", 0, 1625, "Especialista", "TANQUE", 0, "Battlerboar", 1,800),
+("Bucksel", 0, 829, "Armario", "TANQUE", 6, "Cloakbane", 2,800),
+("Mashgor", 0, 35, "Bajo", "TANQUE", 2, "Greyblade", 3,800), 
+("Gim", 0, 78, "Elfo", "TANQUE", 5, "Breakfury", 4,800);
+
 INSERT INTO Mision_indi (Nombre_personaje) VALUES 
 ("Raendan"), 
 ("Ahkarg"), 
@@ -86,14 +85,17 @@ INSERT INTO NPC_regala(Nombre_personaje, Codigo_pocion, ID_NPC, Fecha_regalo) VA
 ("Carorhall", 1, 006,"2018-4-12 14:32:43"),
 ("Bucksel", 0, 006,"2018-4-12 14:32:43");
 
-##########################	edito	##########################333
+
 INSERT INTO Compra(ID_daga, Nombre_tienda, Nombre_personaje) VALUES 
-(2, "El ojo del lobo", "Makwi"), 
-(4, "El huracan despiadado", "Carorhall"),
-(1, "El ojo del lobo", "Xadel"), 
-(3, "El ojo del lobo", "Xadel"), 
-(5, "El ojo del lobo", "Xadel"), 
-(6, "El ojo del lobo", "Xadel"); 
+(2, "Tienda de el ojo del lobo", "Makwi"), 
+(4, "Tienda de el huracan despiadado", "Carorhall"),
+(1, "Tienda de el ojo del lobo", "Xadel"), 
+(3, "Tienda de el ojo del lobo", "Xadel"), 
+(5, "Tienda de el ojo del lobo", "Xadel"), 
+(6, "Tienda de el ojo del lobo", "Xadel"),
+(3, "Tienda de Rolla", "Stanto"),
+(4, "Tienda de Rolla", "Enso"),
+(4, "Tienda de Rolla", "Dryto");
 
 INSERT INTO Habilidad 
 VALUES ("Intelecto Arcano", 0, "Aumenta el mana", "MAGO"), ("Traslacion", 3, "Te trasladas a un radio de 30m", "MAGO"), ("Nova de Escarcha", 10, "Inflige una tormenta", "MAGO"),
@@ -136,7 +138,7 @@ INSERT INTO Fabrica VALUES
 ('BACULO', 5, "Manddin", "2008-7-15 10:21:21", "Báculo de Madera", 19);
 
 INSERT INTO Escuadron(Nombre_personaje_tanque, Nombre_personaje_mago, Nombre_personaje_guerrero, Nivel_escuadron)
-VALUES ("Ahkarg", "Raendan", "Stanto", 0), ("Bucksel", "Manddin", "Makwi", 2), ("Mashgor", "Xadel", "Carorhall", 4);
+VALUES ("Ahkarg", "Raendan", "Stanto", 0), ("Bucksel", "Manddin", "Makwi", 2), ("Mashgor", "Xadel", "Carorhall", 4), ("Ahkarg", "Xadel", "Makwi", 0);
 
 INSERT INTO Mision_escuadron
 VALUES (1, "Dehiss"), (2, "Grifin"), (3, "Kystorm");
