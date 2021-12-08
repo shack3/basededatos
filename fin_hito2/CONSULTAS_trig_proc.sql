@@ -1,72 +1,79 @@
-/*a*/
-select *
-from dragon
-where nombre_dragon = 'Grifin' or nombre_dragon = 'Ocho cabezas';
+#---------------------------------------------A---------------------------------------------
+SELECT *
+FROM Dragon
+WHERE nombre_dragon = 'Grifin' OR nombre_dragon = 'Ocho cabezas';
 
-/*b*/
-select p.nombre_personaje
-from personaje p inner join compra c on p.nombre_personaje = c.nombre_personaje
-where tipo_rol = 'Guerrero' 
-and nombre_tienda = 'Tienda de Rolla'
-and c.nombre_personaje in (select p.nombre_personaje
-		                 from personaje p inner join fabrica f on p.nombre_personaje = f.nombre_personaje
-                         inner join forja on f.Id_forja = forja.Id_forja
-                         where Nombre_forja = "Forja del enano risueño");
+#---------------------------------------------B---------------------------------------------
+SELECT p.nombre_personaje
+FROM Personaje p INNER JOIN Compra c ON p.nombre_personaje = c.nombre_personaje
+WHERE tipo_rol = 'Guerrero' 
+AND nombre_tienda = 'Tienda de Rolla'
+AND c.nombre_personaje IN (SELECT p.nombre_personaje
+		                 FROM Personaje p INNER JOIN Fabrica f ON p.nombre_personaje = f.nombre_personaje
+                         INNER JOIN Forja ON f.Id_forja = Forja.Id_forja
+                         WHERE Nombre_forja = "Forja del enano risueño");
 
-/*c*/
-select oro_total, nombre_personaje
-from personaje 
-order by oro_total desc;
+#---------------------------------------------C---------------------------------------------
+SELECT oro_total, nombre_personaje
+FROM Personaje 
+ORDER BY oro_total DESC;
 
-/*d*/
-select nombre_jugador, sum(dragones_desbloq)
-from personaje 
-group by nombre_jugador;
+#---------------------------------------------D---------------------------------------------
+SELECT nombre_jugador, sum(dragones_desbloq)
+FROM Personaje 
+GROUP BY nombre_jugador;
 
-/*E*/
-SELECT DISTINCT personaje.Nombre_jugador 
-FROM personaje, compra, tienda
-WHERE personaje.Nombre_personaje = compra.Nombre_personaje
-	  AND tienda.Nombre_tienda = compra.Nombre_tienda
-	  AND tienda.Nombre_ciudad NOT IN (SELECT forja.Nombre_ciudad 
-										FROM forja
+#---------------------------------------------E---------------------------------------------
+SELECT DISTINCT Personaje.Nombre_jugador 
+FROM Personaje, Compra, Tienda
+WHERE Personaje.Nombre_personaje = Compra.Nombre_personaje
+	  AND Tienda.Nombre_tienda = Compra.Nombre_tienda
+	  AND Tienda.Nombre_ciudad NOT IN (SELECT Forja.Nombre_ciudad 
+										FROM Forja
 										GROUP BY Nombre_ciudad
 										HAVING COUNT(*) > 2);
                                         
-/*F*/
+#---------------------------------------------F---------------------------------------------
 SELECT * 
-FROM personaje, fabrica
-WHERE fabrica.Nombre_personaje = personaje.Nombre_personaje
-AND personaje.Tipo_rol = "TANQUE"
-AND fabrica.Nombre = "Hacha de doble punta"
-AND fabrica.Nombre_personaje NOT IN (SELECT DISTINCT fabrica.Nombre_personaje #fabrica.Nombre 
-										FROM fabrica
-										WHERE fabrica.Nombre <> "Hacha de doble punta");
+FROM Personaje, Fabrica
+WHERE Fabrica.Nombre_personaje = Personaje.Nombre_personaje
+AND Personaje.Tipo_rol = "TANQUE"
+AND Fabrica.Nombre = "Hacha de doble punta"
+AND Fabrica.Nombre_personaje NOT IN (SELECT DISTINCT Fabrica.Nombre_personaje #fabrica.Nombre 
+										FROM Fabrica
+										WHERE Fabrica.Nombre <> "Hacha de doble punta");
                                         
-/*G*/
-SELECT personaje.Nombre_personaje, rol.Vida_personaje, rol.Fuerza, personaje.Nombre_jugador
-FROM personaje, rol, NPC_Regala
-WHERE personaje.Tipo_rol = rol.Tipo_rol
-AND personaje.Nombre_personaje = NPC_Regala.Nombre_personaje
-GROUP BY personaje.Nombre_personaje
-HAVING COUNT(*) = (SELECT count(DISTINCT ID_NPC) FROM druida);
+#---------------------------------------------G---------------------------------------------
+SELECT Personaje.Nombre_personaje, Rol.Vida_personaje, Rol.Fuerza, Personaje.Nombre_jugador
+FROM Personaje, Rol, NPC_regala
+WHERE Personaje.Tipo_rol = Rol.Tipo_rol
+AND Personaje.Nombre_personaje = NPC_regala.Nombre_personaje
+GROUP BY Personaje.Nombre_personaje
+HAVING COUNT(*) = (SELECT count(DISTINCT ID_NPC) FROM Druida);
 
-/*H*/
-SELECT personaje.Nivel_personaje, personaje.Nombre_personaje
-FROM personaje INNER JOIN rol ON rol.Tipo_rol = personaje.Tipo_rol
-			   INNER JOIN compra ON personaje.Nombre_personaje = compra.Nombre_personaje
-WHERE rol.Tipo_rol = "MAGO"
-AND personaje.Nombre_personaje IN(SELECT personaje.Nombre_personaje 
-								  FROM personaje INNER JOIN compra ON personaje.Nombre_personaje = compra.Nombre_personaje
-												 INNER JOIN daga ON compra.Id_daga = daga.Id_daga
-								  GROUP BY personaje.Nombre_personaje
-								  HAVING count(DISTINCT daga.Nombre_daga) = (SELECT count(DISTINCT daga.Nombre_daga) FROM daga))
-GROUP BY personaje.Nombre_personaje
-HAVING COUNT(*) = (SELECT COUNT(DISTINCT enemigo.Nombre_enemigo)
-				   FROM enemigo
-                   WHERE enemigo.Nombre_tipoene = "ESPECTRO");
 
-#I
+
+
+#---------------------------------------------H---------------------------------------------
+SELECT Personaje.Nivel_personaje, Personaje.Nombre_personaje
+FROM Personaje INNER JOIN Rol ON Rol.Tipo_rol = Personaje.Tipo_rol
+			   INNER JOIN Compra ON Personaje.Nombre_personaje = Compra.Nombre_personaje
+WHERE Rol.Tipo_rol = "MAGO"
+AND Personaje.Nombre_personaje IN(SELECT Personaje.Nombre_personaje 
+								  FROM Personaje INNER JOIN Compra ON Personaje.Nombre_personaje = Compra.Nombre_personaje
+												 INNER JOIN Daga ON Compra.Id_daga = Daga.Id_daga
+								  GROUP BY Personaje.Nombre_personaje
+								  HAVING count(DISTINCT Daga.Nombre_daga) = (SELECT count(DISTINCT Daga.Nombre_daga) FROM Daga))
+GROUP BY Personaje.Nombre_personaje
+HAVING COUNT(*) = (SELECT COUNT(DISTINCT Enemigo.Nombre_enemigo)
+				   FROM Enemigo
+                   WHERE Enemigo.Nombre_tipoene = "ESPECTRO");
+
+
+
+
+
+#---------------------------------------------I---------------------------------------------
 SELECT Nombre_personaje,Nivel_personaje,Oro_total,Apariencia,Tipo_rol,Dragones_desbloq
 FROM Personaje INNER JOIN Escuadron ON Personaje.Nombre_personaje=Escuadron.Nombre_personaje_tanque
 GROUP BY Escuadron.Nombre_personaje_tanque
@@ -75,7 +82,7 @@ HAVING COUNT(Nombre_personaje_tanque) = (SELECT MAX(can)
 											   FROM Escuadron
                                                Group BY Nombre_personaje_tanque) P);
                                                
-#J
+#---------------------------------------------J---------------------------------------------
 SELECT distinct Arma.Nombre, Arma.Tipo_arma, Peso,Nombre_forja
 FROM Arma INNER JOIN Fabrica ON Arma.Tipo_arma=Fabrica.Tipo_arma
 INNER JOIN Forja ON Forja.Id_forja=Fabrica.Id_forja
@@ -83,16 +90,17 @@ WHERE Arma.Peso= (SELECT MIN(Peso)
 					   FROM Arma
                        WHERE Tipo_arma= "Hacha");                                               
 
-#PROCEDIMIENTOS
-#A
+
+
+
+
+
+#--------------------------------------------PROCEDIMIENTOS--------------------------------------------
+#---------------------------------------------------A--------------------------------------------------
 
 ALTER TABLE Personaje
-ADD Enemigos_eliminados integer ;
+ADD Enemigos_eliminados INTEGER ;
 
-select *
-from Personaje;
-
-update Personaje set Enemigos_eliminados= "51" where Nombre_personaje="Dryto";
 
 DELIMITER //
 CREATE PROCEDURE aumento_vida()
@@ -128,19 +136,31 @@ BEGIN
 END//
 DELIMITER ;
 
-call aumento_vida();
+#-------------------------------------------------------------------------------------------
+#----------------------------------PRUEBAS PROCEDIMIENTO A----------------------------------
+#-------------------------------------------------------------------------------------------
 
-select *
-from Personaje;
 
-#B
+
+SELECT * FROM Personaje WHERE Nombre_personaje="Dryto";
+
+UPDATE Personaje SET Enemigos_eliminados= "51" WHERE Nombre_personaje="Dryto";
+
+CALL aumento_vida();
+
+SELECT * FROM Personaje WHERE Nombre_personaje="Dryto";
+
+
+
+
+
+
+
+
+#---------------------------------------------B---------------------------------------
 ALTER TABLE Personaje
 ADD Ultima_conex DATE  ;
 
-select *
-from Personaje;
-
-update Personaje set Ultima_conex= "2021-11-11" where Nombre_personaje="Raendan"
 DELIMITER $$
 CREATE PROCEDURE ult_conexion(IN  Fecha Date, IN Nombre varchar(50))
 BEGIN 
@@ -158,50 +178,132 @@ BEGIN
 END $$
 DELIMITER ;
 
+#-------------------------------------------------------------------------------------------
+#----------------------------------PRUEBAS PROCEDIMIENTO B----------------------------------
+#-------------------------------------------------------------------------------------------
+
+SELECT * FROM Personaje WHERE Nombre_personaje="Raendan";
+
+UPDATE Personaje SET Ultima_conex= "2021-11-11" WHERE Nombre_personaje="Raendan";
+
 CALL `Dragones_Y_Mazmorras`.`ult_conexion`("2022-10-11", "Raendan");
 
-#TRIGGERS 
-#A
+SELECT * FROM Personaje;
 
+
+
+
+#---------------------------------------TRIGGERS--------------------------------------------
+#-------------------------------------------A-----------------------------------------------
 DELIMITER //
 CREATE TRIGGER Drakes BEFORE UPDATE ON Personaje
 FOR EACH ROW
 BEGIN
 	IF NEW.Dragones_desbloq >= 3 THEN
-	SET NEW.Vida_personaje = NEW.Vida_personaje +10;
+	SET NEW.Vida_personaje = NEW.Vida_personaje + 5;
 	END IF;
 END//
 DELIMITER ;
+#-------------------------------------------------------------------------------------------
+#----------------------------------PRUEBAS TRIGGER A----------------------------------------
+#-------------------------------------------------------------------------------------------
+
+SELECT * FROM Personaje WHERE Nombre_personaje="Enso";
 
 UPDATE Personaje SET Dragones_desbloq= 3 WHERE Nombre_personaje="Enso";
 
-select *
-from Personaje;
+SELECT * FROM Personaje WHERE Nombre_personaje="Enso";
 
-#B
+
+
+
+
+#---------------------------------------------B---------------------------------------------
 DELIMITER //
-CREATE TRIGGER Bloqueo BEFORE UPDATE ON Mision_escuadron
+CREATE TRIGGER Bloqueo AFTER INSERT ON Participa_escuadron
 FOR EACH ROW
 BEGIN
 	DECLARE Min_Dragon INTEGER;
 	DECLARE Minimo INTEGER;
   
-    
     SELECT Num_dragon INTO Min_Dragon
-    FROM Mission_escuadron INNER JOIN Dragon ON Mission_escuadron.Num_dragon=Dragon.Num_dragon;
+    FROM Mision_escuadron INNER JOIN Participa_escuadron ON Mision_escuadron.Cod_mision=Participa_escuadron.Participa_Cod_mision
+    WHERE Participa_escuadron.Participa_Cod_mision=NEW.Participa_Cod_mision;
     
-    SELECT MIN(Dragones_desbloq) INTO Minimo
-    FROM Personaje INNER JOIN Escuadron ON Personaje.Nombre_personaje=Escuadron.Nombre_personaje_tanque 
-    INNER JOIN Mission_escuadron ON Escuadron.Cod_escuadron=Mission_escuadron.Cod_escuadron;
+    SELECT min(Dragones_desbloq) INTO Minimo
+    FROM Personaje INNER JOIN Escuadron ON Personaje.Nombre_personaje=Escuadron.Nombre_personaje_tanque OR Personaje.Nombre_personaje=Escuadron.Nombre_personaje_mago OR Personaje.Nombre_personaje=Escuadron.Nombre_personaje_guerrero
+    INNER JOIN Participa_escuadron ON Escuadron.Cod_escuadron=Participa_escuadron.Participa_Cod_escuadron
+    INNER JOIN Mision_escuadron ON Mision_escuadron.Cod_mision=Participa_escuadron.Participa_Cod_mision
+    WHERE Participa_escuadron.Participa_Cod_escuadron=NEW.Participa_Cod_escuadron; 
     
-    IF Minimo<MinDragon Then
+    
+    IF Minimo<Min_Dragon Then
 		SIGNAL SQLSTATE '02000'
         SET MESSAGE_TEXT =' ERROR: Un Personaje no tiene el Dragon desbloqueado';
 	END IF;
     
 END//
-DELIMITER ;
-select *
-from Mision_escuadron;
- INSERT INTO Mision_escuadron
-VALUES (9,6);
+DELIMITER ; 
+#-------------------------------------------------------------------------------------------
+#----------------------------------PRUEBAS TRIGGER B----------------------------------------
+#-------------------------------------------------------------------------------------------
+DROP TRIGGER Bloqueo;
+
+SELECT * FROM Personaje WHERE Nombre_Personaje="Bucksel" OR Nombre_personaje = "Enso" OR Nombre_personaje="Stanto";
+
+INSERT INTO Escuadron(Nombre_personaje_tanque, Nombre_personaje_mago, Nombre_personaje_guerrero)
+VALUES ("Bucksel", "Enso", "Stanto");
+
+SELECT * FROM Escuadron;
+
+
+INSERT INTO Participa_escuadron(Participa_Cod_mision, Participa_Cod_escuadron) VALUES (12338, 3); #La mision con codigo 12338 contiene un dragon de nivel 6
+INSERT INTO Participa_escuadron(Participa_Cod_mision, Participa_Cod_escuadron) VALUES (23452, 3); #La mision con codigo 23452 contiene un dragon de nivel 1
+
+SELECT * FROM Participa_escuadron;
+
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DELETE Participa FROM Participa_escuadron AS Participa LEFT JOIN Escuadron ON Participa_escuadron.Participa_Cod_escuadron=Escuadron.Cod_escuadron 
+													   LEFT JOIN Mision_escuadron ON Participa_escuadron.Participa_Cod_mision=Mision_escuadron.Cod_mision
+                                                       WHERE  `Nivel_escuadron` < `Num_dragon`;
+
+DELETE FROM Participa_escuadron WHERE Participa_Cod_escuadron= 1;
+
+
+DELETE FROM Escuadron;
+
+DELETE FROM Participa_escuadron WHERE Participa_escuadron.Participa_Cod_escuadron IN (SELECT * FROM (SELECT Participa_escuadron.Participa_Cod_escuadron FROM  Participa_escuadron 
+												LEFT JOIN Escuadron ON Participa_escuadron.Participa_Cod_escuadron=Escuadron.Cod_escuadron 
+												LEFT JOIN Mision_escuadron ON Participa_escuadron.Participa_Cod_mision=Mision_escuadron.Cod_mision
+												WHERE `Nivel_escuadron` < `Num_dragon`)AS A);
+#------------------------------------
+
+
+
+
+SELECT * FROM Participa_escuadron 
+			LEFT JOIN Escuadron ON Participa_escuadron.Participa_Cod_escuadron=Escuadron.Cod_escuadron 
+			LEFT JOIN Mision_escuadron ON Participa_escuadron.Participa_Cod_mision=Mision_escuadron.Cod_mision;
+
+
+
+SELECT Participa_escuadron.Participa_Cod_escuadron FROM Participa_escuadron LEFT JOIN Escuadron ON Participa_escuadron.Participa_Cod_escuadron=Escuadron.Cod_escuadron 
+								  LEFT JOIN Mision_escuadron ON Participa_escuadron.Participa_Cod_mision=Mision_escuadron.Cod_mision;
+
+SELECT Participa_escuadron.Participa_Cod_escuadron FROM  Participa_escuadron 
+												LEFT JOIN Escuadron ON Participa_escuadron.Participa_Cod_escuadron=Escuadron.Cod_escuadron 
+												LEFT JOIN Mision_escuadron ON Participa_escuadron.Participa_Cod_mision=Mision_escuadron.Cod_mision
+												WHERE `Nivel_escuadron` < `Num_dragon`;
+#Selecciona todo 
+SELECT * FROM Participa_escuadron 
+			LEFT JOIN Escuadron ON Participa_escuadron.Participa_Cod_escuadron=Escuadron.Cod_escuadron 
+			LEFT JOIN Mision_escuadron ON Participa_escuadron.Participa_Cod_mision=Mision_escuadron.Cod_mision;
+

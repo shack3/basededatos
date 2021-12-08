@@ -53,13 +53,13 @@ INSERT INTO Daga(Nombre_daga) VALUES
 INSERT INTO Personaje VALUES 
 ("Raendan", 0, 20, "Guapo", "MAGO", 2, "Breakfury", 1,200), 
 ("Manddin", 0, 500, "Bello", "MAGO", 3, "Hammerpowerthunder", 2,200), 
-("Xadel", 0, 628, "Feo", "MAGO", 4, "Greyblade", 2,200), 
+("Xadel", 16, 628, "Feo", "MAGO", 4, "Greyblade", 2,200), 
 ("Enso", 0, 430, "Mediocre", "MAGO", 1, "Battlerboar", 3,200),
 ("Stanto", 0, 2000, "Alto", "GUERRERO", 3, "Cloakbane", 4,400),
 ("Makwi", 0, 110, "Gordo", "GUERRERO", 0, "Greyblade", 1,400), 
 ("Carorhall", 0, 900, "Reluciente", "GUERRERO", 4, "Breakfury", 4,400), 
 ("Dryto", 0, 1345, "Poderoso", "GUERRERO", 1, "Hammerpowerthunder", 3,400),
-("Ahkarg", 0, 1625, "Especialista", "TANQUE", 0, "Battlerboar", 1,800),
+("Ahkarg", 18, 1625, "Especialista", "TANQUE", 0, "Battlerboar", 1,800),
 ("Bucksel", 0, 829, "Armario", "TANQUE", 6, "Cloakbane", 2,800),
 ("Mashgor", 0, 35, "Bajo", "TANQUE", 2, "Greyblade", 3,800), 
 ("Gim", 0, 78, "Elfo", "TANQUE", 5, "Breakfury", 4,800);
@@ -140,19 +140,11 @@ INSERT INTO Fabrica VALUES
 ('ESPADA', 2, "Dryto", "2008-7-15 10:21:21", "Espada flamígera", 34);
 
 
-INSERT INTO Escuadron(Nombre_personaje_tanque, Nombre_personaje_mago, Nombre_personaje_guerrero, Nivel_escuadron)
-VALUES ("Ahkarg", "Raendan", "Stanto", 0), ("Bucksel", "Manddin", "Makwi", 2), ("Mashgor", "Xadel", "Carorhall", 4), ("Ahkarg", "Xadel", "Makwi", 0);
+INSERT INTO Escuadron(Nombre_personaje_tanque, Nombre_personaje_mago, Nombre_personaje_guerrero)
+VALUES ("Ahkarg", "Raendan", "Stanto"),("Ahkarg", "Xadel", "Makwi");
 
 INSERT INTO Mision_escuadron
-VALUES (1, 1), (2, 4), (3, 5);
-
-INSERT INTO Participa_escuadron
-VALUES (1, 1), (2,2),(3,3);
-
-###################### A TOMAR POR CULO ESTO ###########################
-#INSERT INTO Porta
-#VALUES (0, "Ahkarg"), (0, "Raendan"), (3, "Makwi"), (1, "Mashgor"), (2, "Xadel"), (1, "Carorhall");
-
+VALUES (23452, 1), (12523, 2), (31234, 3), (12317, 4), (12389, 5), (12338, 6);
 
 INSERT INTO Posee
 VALUES ("ESPADA", "Makwi"), ("HACHA", "Mashgor"),("BACULO", "Manddin");

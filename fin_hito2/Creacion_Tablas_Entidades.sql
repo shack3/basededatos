@@ -194,7 +194,6 @@ CREATE TABLE Escuadron( #Meter trigger para que el personaje en si no sea distin
 	Nombre_personaje_tanque VARCHAR(50)  NOT NULL, 
     Nombre_personaje_mago VARCHAR(50)  NOT NULL,
     Nombre_personaje_guerrero VARCHAR(50)  NOT NULL,
-	Nivel_escuadron INTEGER NOT NULL, #<----- DEBE DE CREARSE CON LA MEDIA DE LOS 3 PERSONAJES. Otro trigger.
 	Cod_escuadron INTEGER UNIQUE NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (Cod_escuadron),
     CONSTRAINT FOREIGN KEY (Nombre_personaje_tanque) REFERENCES Personaje(Nombre_personaje)
@@ -226,13 +225,13 @@ CREATE TABLE Mision_escuadron(
 );
 
 CREATE TABLE Participa_escuadron( #Junta escuadrones con misiones.
-	Cod_mision INTEGER UNIQUE NOT NULL,
-    Cod_escuadron INTEGER UNIQUE NOT NULL,
-    PRIMARY KEY (Cod_mision, Cod_escuadron),
-    CONSTRAINT FOREIGN KEY (Cod_mision) REFERENCES Mision_escuadron(Cod_mision)
+	Participa_Cod_mision INTEGER,
+    Participa_Cod_escuadron INTEGER,
+    PRIMARY KEY (Participa_Cod_mision, Participa_Cod_escuadron),
+    CONSTRAINT FOREIGN KEY (Participa_Cod_mision) REFERENCES Mision_escuadron(Cod_mision)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-    CONSTRAINT FOREIGN KEY (Cod_escuadron) REFERENCES Escuadron(Cod_escuadron)
+    CONSTRAINT FOREIGN KEY (Participa_Cod_escuadron) REFERENCES Escuadron(Cod_escuadron)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
