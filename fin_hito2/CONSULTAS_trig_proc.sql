@@ -162,31 +162,52 @@ ALTER TABLE Personaje
 ADD Ultima_conex DATE  ;
 
 DELIMITER $$
-CREATE PROCEDURE ult_conexion(IN  Fecha Date, IN Nombre varchar(50))
+CREATE PROCEDURE ult_conexion(IN Fecha Date)
 BEGIN 
 	DECLARE Fecha_ult Date;
     DECLARE diff Integer;
-    SELECT Ultima_conex INTO Fecha_ult  
-    FROM Personaje
-    WHERE Nombre= Nombre_personaje;
+    DECLARE Nombre VARCHAR(30);
     
-    SELECT DATEDIFF(Fecha, Fecha_ult) INTO diff;
-    IF diff >= 60 THEN
-		DELETE FROM Personaje
-        Where Nombre= Nombre_personaje;
-	END IF;
+    
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE cursor1 CURSOR FOR SELECT Nombre_personaje,Ultima_conex FROM Personaje ;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    
+    OPEN cursor1;
+		bucle: LOOP
+			FETCH cursor1 INTO Nombre, Fecha_ult;
+		
+			IF done THEN
+				LEAVE bucle;
+			END IF;
+			
+			SELECT Ultima_conex INTO Fecha_ult  
+					FROM Personaje
+					WHERE Nombre = Nombre_personaje;
+			
+			SELECT DATEDIFF(Fecha, Fecha_ult) INTO diff;
+            
+			IF diff >= 60 THEN
+				DELETE FROM Personaje
+				Where Nombre = Nombre_personaje;
+			END IF;
+			
+        END LOOP bucle;
+		CLOSE cursor1;
+        
 END $$
 DELIMITER ;
 
 #-------------------------------------------------------------------------------------------
 #----------------------------------PRUEBAS PROCEDIMIENTO B----------------------------------
 #-------------------------------------------------------------------------------------------
+SELECT * FROM Personaje;
 
-SELECT * FROM Personaje WHERE Nombre_personaje="Raendan";
+UPDATE Personaje SET Ultima_conex= "2020-10-01" WHERE Nombre_personaje="Raendan";
+UPDATE Personaje SET Ultima_conex= "2017-12-11" WHERE Nombre_personaje="Ahkarg";
+UPDATE Personaje SET Ultima_conex= "2021-11-11" WHERE Nombre_personaje="Bucksel";
 
-UPDATE Personaje SET Ultima_conex= "2021-11-11" WHERE Nombre_personaje="Raendan";
-
-CALL `Dragones_Y_Mazmorras`.`ult_conexion`("2022-10-11", "Raendan");
+CALL `Dragones_Y_Mazmorras`.`ult_conexion`("2021-12-19");
 
 SELECT * FROM Personaje;
 
